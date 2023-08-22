@@ -1,9 +1,10 @@
 const router = require('express').Router();
 
-const routerUser = require('./users');
-const routerMovie = require('./movies');
+const routeSign = require('./sign');
+const routeUsers = require('./users');
 
-router.use(routerUser);
-router.use(routerMovie);
+router.use(routeSign);
 
-module.export = router;
+router.use(routeUsers);
+
+module.exports = router;
