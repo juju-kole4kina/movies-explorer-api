@@ -1,3 +1,5 @@
+const Movie = require('../models/movie');
+
 const getSaveMovies = (req, res, next) => {};
 
 const createMovieCard = (req, res, next) => {};
