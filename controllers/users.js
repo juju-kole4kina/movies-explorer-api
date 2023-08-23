@@ -1,9 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require('jsonwebtoken');
+
 const User = require('../models/user');
+const NotFoundError = require('../errors/not-found-err');
+const BadRequestError = require('../errors/bad-request-err');
+const ConflictError = require('../errors/conflict-err');
+
+const {
+  BAD_REQUEST_ERROR_MESSAGE,
+  NOT_FOUND_ERROR_MESSAGE,
+  CONFLICT_ERROR_MESSAGE,
+  DUPLICATE_KEY_ERROR_CODE,
+  VALIDATION_ERROR_NAME,
+} = require('../utils/constants');
+
 const { NODE_ENV, JWT_SECRET } = require('../utils/config');
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, email, password } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => {
@@ -13,16 +26,25 @@ const createUser = (req, res) => {
         password: hash,
       });
     })
-    // .then((user) => res.send({
-    //   _id: user._id,
-    //   name: user.name,
-    //   email: user.email,
-    // }))
-    .then((user) => res.send({ data: user }))
-    .catch((err) => res.send({ message: err.message }));
+    .then((user) => res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    }))
+    .catch((err) => {
+      if (err.code === DUPLICATE_KEY_ERROR_CODE) {
+        next(new ConflictError(CONFLICT_ERROR_MESSAGE));
+        return;
+      }
+      if (err.name === VALIDATION_ERROR_NAME) {
+        next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
+        return;
+      }
+      next(err);
+    });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
@@ -34,21 +56,37 @@ const login = (req, res) => {
         sameSite: true,
       }).send(token);
     })
-    .catch((err) => res.send({ message: err.message }));
+    .catch(next);
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => res.send(user))
-    .catch((err) => res.send({ message: err.message }));
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError(NOT_FOUND_ERROR_MESSAGE);
+      }
+      res.send(user);
+    })
+    .catch(next);
 };
 
-const updateUserData = (req, res) => {
+const updateUserData = (req, res, next) => {
   const { name, email } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
-    .then((user) => res.send(user))
-    .chatch((err) => res.send({ message: err.message }));
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError(NOT_FOUND_ERROR_MESSAGE);
+      }
+      res.send(user);
+    })
+    .chatch((err) => {
+      if (err.name === VALIDATION_ERROR_NAME) {
+        next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports = {

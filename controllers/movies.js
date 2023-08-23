@@ -1,6 +1,18 @@
 const Movie = require('../models/movie');
 
-const createSaveMovie = (req, res) => {
+const NotFoundError = require('../errors/not-found-err');
+const BadRequestError = require('../errors/bad-request-err');
+const ForbittenError = require('../errors/forbitten-err');
+
+const {
+  BAD_REQUEST_ERROR_MESSAGE,
+  NOT_FOUND_ERROR_MESSAGE,
+  FORBITTEN_ERROR_MESSAGE,
+  VALIDATION_ERROR_NAME,
+  CASTOM_ERROR_NAME,
+} = require('../utils/constants');
+
+const createSaveMovie = (req, res, next) => {
   const {
     country,
     director,
@@ -30,25 +42,42 @@ const createSaveMovie = (req, res) => {
     owner: req.user._id,
   })
     .then((movie) => res.send(movie))
-    .catch((err) => res.send({ message: err.message }));
+    .catch((err) => {
+      if (err.name === VALIDATION_ERROR_NAME) {
+        next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
+        return;
+      }
+      next(err);
+    });
 };
 
-const getSaveMovies = (req, res) => {
+const getSaveMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
     .then((movies) => res.send(movies))
-    .catch((err) => res.send({ message: err.message }));
+    .catch(next);
 };
 
-const deleteSaveMovie = (req, res) => {
+const deleteSaveMovie = (req, res, next) => {
   const { movieId } = req.params;
   Movie.findById(movieId)
     .then((movie) => {
+      if (!movie) {
+        throw new NotFoundError(NOT_FOUND_ERROR_MESSAGE);
+      }
       if (req.user._id === movie.owner.toString()) {
         Movie.findByIdAndRemove(movieId)
           .then((isMovie) => res.send(isMovie));
+      } else {
+        throw new ForbittenError(FORBITTEN_ERROR_MESSAGE);
       }
     })
-    .catch((err) => res.send({ message: err.message }));
+    .catch((err) => {
+      if (err.name === CASTOM_ERROR_NAME) {
+        next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports = {
