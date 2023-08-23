@@ -19,6 +19,8 @@ const createUser = (req, res) => {
     .catch((err) => res.send({ message: err.message }));
 };
 
+const login = (req, res) => {};
+
 const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .then((user) => res.send(user))
@@ -35,6 +37,7 @@ const updateUserData = (req, res) => {
 
 module.exports = {
   createUser,
+  login,
   getCurrentUser,
   updateUserData,
 };
