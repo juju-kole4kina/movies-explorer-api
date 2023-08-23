@@ -13,11 +13,12 @@ const createUser = (req, res) => {
         password: hash,
       });
     })
-    .then((user) => res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    }))
+    // .then((user) => res.send({
+    //   _id: user._id,
+    //   name: user.name,
+    //   email: user.email,
+    // }))
+    .then((user) => res.send({ data: user }))
     .catch((err) => res.send({ message: err.message }));
 };
 
