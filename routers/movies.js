@@ -9,7 +9,7 @@ const {
 router.post('/movies', celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(true),
-    director: Joi.string().require(true),
+    director: Joi.string().required(true),
     duration: Joi.number().required(true),
     year: Joi.string().required(true),
     description: Joi.string().required(true),
