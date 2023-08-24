@@ -17,7 +17,7 @@ const {
   errorLogger,
 } = require('./middleware/logger');
 
-const { PORT, MONGODB_URL } = require('./utils/config');
+const { MONGODB_URL } = require('./utils/config');
 
 const app = express();
 
@@ -41,6 +41,4 @@ app.use(errorLogger);
 app.use(errors());
 app.use(serverError);
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+module.exports = app;

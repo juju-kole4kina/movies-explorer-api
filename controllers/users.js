@@ -23,7 +23,6 @@ const createUser = (req, res, next) => {
       name, email, password: hash,
     }))
     .then((user) => {
-      console.log({user});
       res.send({ _id: user._id, name, email });
     })
     .catch((err) => {
@@ -49,8 +48,7 @@ const login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         sameSite: true,
-      }).send(token);
-      console.log(token);
+      }).send({ token });
     })
     .catch(next);
 };
@@ -76,7 +74,7 @@ const updateUserData = (req, res, next) => {
       }
       res.send(user);
     })
-    .chatch((err) => {
+    .catch((err) => {
       if (err.name === VALIDATION_ERROR_NAME) {
         next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
         return;

@@ -145,3 +145,5 @@ node_modules
 .idea
 .vscode
 .env
+
+endopoint.test.js
