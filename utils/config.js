@@ -8,10 +8,10 @@ const {
 const ALLOWED_CORS = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
-  'http://api.koltsova.diploma.movie-explorer.nomoredomainsicu.ru',
-  'https://api.koltsova.diploma.movie-explorer.nomoredomainsicu.ru',
-  'http://koltsova.diploma.movie-explorer.nomoredomainsicu.ru',
-  'https://koltsova.diploma.movie-explorer.nomoredomainsicu.ru',
+  'http://api.movie-exp.kole4kina.nomoredomainsicu.ru',
+  'https://api.movie-exp.kole4kina.nomoredomainsicu.ru',
+  'http://movie-exp.kole4kina.nomoredomainsicu.ru',
+  'https://movie-exp.kole4kina.nomoredomainsicu.ru',
 ];
 
 module.exports = {
