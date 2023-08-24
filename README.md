@@ -24,6 +24,6 @@
 
 ## Ссылки на проект
 
-IP 158.160.16.1
+IP 51.250.97.238
 
 [backend](https://api.movie-exp.kole4kina.nomoredomainsicu.ru)
