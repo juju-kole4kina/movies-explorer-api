@@ -1,11 +1,13 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { NODE_ENV, JWT_SECRET } = require('../utils/config');
+const UnauthorizationError = require('../errors/unauthorization-err');
+const { UNAUTHORIZATION_ERROR_MESSAGE } = require('../utils/constants');
 
 const auth = (req, res, next) => {
   const { jwt } = req.cookies;
 
   if (!jwt) {
-    next(new Error('Необходима авторизация'));
+    next(new UnauthorizationError(UNAUTHORIZATION_ERROR_MESSAGE));
     return;
   }
 

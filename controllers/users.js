@@ -19,18 +19,13 @@ const { NODE_ENV, JWT_SECRET } = require('../utils/config');
 const createUser = (req, res, next) => {
   const { name, email, password } = req.body;
   bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        name,
-        email,
-        password: hash,
-      });
-    })
-    .then((user) => res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
+    .then((hash) => User.create({
+      name, email, password: hash,
     }))
+    .then((user) => {
+      console.log({user});
+      res.send({ _id: user._id, name, email });
+    })
     .catch((err) => {
       if (err.code === DUPLICATE_KEY_ERROR_CODE) {
         next(new ConflictError(CONFLICT_ERROR_MESSAGE));
@@ -55,6 +50,7 @@ const login = (req, res, next) => {
         httpOnly: true,
         sameSite: true,
       }).send(token);
+      console.log(token);
     })
     .catch(next);
 };

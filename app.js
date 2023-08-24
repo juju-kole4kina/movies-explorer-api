@@ -11,6 +11,7 @@ const router = require('./routers/index');
 
 const serverError = require('./middleware/serverError');
 const limiter = require('./middleware/limiter');
+const cors = require('./middleware/cors');
 const {
   requestLogger,
   errorLogger,
@@ -19,6 +20,8 @@ const {
 const { PORT, MONGODB_URL } = require('./utils/config');
 
 const app = express();
+
+app.use(cors);
 
 mongoose.connect(MONGODB_URL, {});
 
