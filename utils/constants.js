@@ -16,6 +16,17 @@ const NOT_FOUND_ERROR_MESSAGE = 'Переданные данные не найд
 const CONFLICT_ERROR_MESSAGE = 'Данные уже существуют';
 const INTERNAL_SERVER_ERROR_CODE_MESSAGE = 'Ошибка на сервере';
 
+const ALLOWED_CORS = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://api.movie-exp.kole4kina.nomoredomainsicu.ru',
+  'https://api.movie-exp.kole4kina.nomoredomainsicu.ru',
+  'http://movie-exp.kole4kina.nomoredomainsicu.ru',
+  'https://movie-exp.kole4kina.nomoredomainsicu.ru',
+];
+
+const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+
 module.exports = {
   BAD_REQUEST_ERROR_CODE,
   UNAUTHORIZATION_ERROR_CODE,
@@ -32,4 +43,6 @@ module.exports = {
   NOT_FOUND_ERROR_MESSAGE,
   CONFLICT_ERROR_MESSAGE,
   INTERNAL_SERVER_ERROR_CODE_MESSAGE,
+  ALLOWED_CORS,
+  DEFAULT_ALLOWED_METHODS,
 };
