@@ -79,6 +79,10 @@ const updateUserData = (req, res, next) => {
         next(new BadRequestError(BAD_REQUEST_ERROR_MESSAGE));
         return;
       }
+      if (err.code === DUPLICATE_KEY_ERROR_CODE) {
+        next(new ConflictError(CONFLICT_ERROR_MESSAGE));
+        return;
+      }
       next(err);
     });
 };

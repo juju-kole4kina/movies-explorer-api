@@ -3,7 +3,7 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 
 const NotFoundError = require('../errors/not-found-err');
-const NOT_FOUND_ERROR_MESSAGE = require('../utils/constants');
+const { NOT_FOUND_ERROR_MESSAGE } = require('../utils/constants');
 
 const routeSign = require('./sign');
 const routeUsers = require('./users');
