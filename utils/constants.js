@@ -19,6 +19,8 @@ const INTERNAL_SERVER_ERROR_CODE_MESSAGE = 'Ошибка на сервере';
 const ALLOWED_CORS = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:3001',
   'http://api.movie-exp.kole4kina.nomoredomainsicu.ru',
   'https://api.movie-exp.kole4kina.nomoredomainsicu.ru',
   'http://movie-exp.kole4kina.nomoredomainsicu.ru',
