@@ -58,14 +58,14 @@ const getSaveMovies = (req, res, next) => {
 };
 
 const deleteSaveMovie = (req, res, next) => {
-  const { movieId } = req.params;
-  Movie.findById(movieId)
+  const { _id } = req.params;
+  Movie.findById(_id)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError(NOT_FOUND_ERROR_MESSAGE);
       }
       if (req.user._id === movie.owner.toString()) {
-        Movie.findByIdAndRemove(movieId)
+        Movie.findByIdAndRemove(_id)
           .then((isMovie) => res.send(isMovie));
       } else {
         throw new ForbittenError(FORBITTEN_ERROR_MESSAGE);
